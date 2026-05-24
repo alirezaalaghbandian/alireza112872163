@@ -1,0 +1,11 @@
+{
+	email admin@opscore.example.com
+}
+
+opscore.example.com {
+	reverse_proxy web:3000
+}
+
+api.opscore.example.com {
+	reverse_proxy api:3001
+}

@@ -1,0 +1,47 @@
+{
+  "common": {
+    "save": "Save changes",
+    "cancel": "Cancel",
+    "delete": "Delete",
+    "create": "Create",
+    "edit": "Edit",
+    "search": "Search...",
+    "loading": "Loading...",
+    "noResults": "No results found"
+  },
+  "nav": {
+    "dashboard": "Dashboard",
+    "signals": "Signals",
+    "kpis": "KPIs",
+    "anomalies": "Anomalies",
+    "incidents": "Incidents",
+    "copilot": "Copilot",
+    "reports": "Reports",
+    "settings": "Settings"
+  },
+  "auth": {
+    "signIn": "Sign in",
+    "signUp": "Create account",
+    "signOut": "Sign out",
+    "email": "Email",
+    "password": "Password",
+    "name": "Full name",
+    "orgName": "Organization name"
+  },
+  "dashboard": {
+    "title": "Dashboard",
+    "subtitle": "Overview of your operational metrics and active incidents."
+  },
+  "incidents": {
+    "title": "Incidents",
+    "newIncident": "New incident",
+    "status": {
+      "open": "Open",
+      "acknowledged": "Acknowledged",
+      "in_progress": "In progress",
+      "waiting_on_reporter": "Waiting on reporter",
+      "resolved": "Resolved",
+      "closed": "Closed"
+    }
+  }
+}

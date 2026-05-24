@@ -1,0 +1,32 @@
+{
+  "name": "opscore",
+  "private": true,
+  "packageManager": "pnpm@9.15.1",
+  "engines": {
+    "node": ">=20.0.0"
+  },
+  "scripts": {
+    "dev": "turbo dev",
+    "build": "turbo build",
+    "lint": "turbo lint",
+    "typecheck": "turbo typecheck",
+    "test": "turbo test",
+    "test:unit": "turbo test:unit",
+    "test:integration": "turbo test:integration",
+    "test:e2e": "playwright test --config=e2e/playwright.config.ts",
+    "db:migrate": "pnpm --filter @opscore/db migrate",
+    "db:seed": "pnpm --filter @opscore/db seed",
+    "db:reset": "pnpm --filter @opscore/db reset",
+    "bootstrap": "pnpm install && pnpm db:migrate && pnpm db:seed",
+    "eval": "tsx eval/run.ts",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
+    "clean": "turbo clean"
+  },
+  "devDependencies": {
+    "eslint": "^10.4.0",
+    "prettier": "^3.8.3",
+    "prettier-plugin-tailwindcss": "^0.8.0",
+    "turbo": "^2.9.14"
+  }
+}
