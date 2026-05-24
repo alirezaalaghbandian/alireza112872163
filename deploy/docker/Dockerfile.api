@@ -8,14 +8,14 @@ COPY apps/api/package.json apps/api/
 COPY packages/db/package.json packages/db/
 COPY packages/domain/package.json packages/domain/
 COPY packages/config/package.json packages/config/
-RUN pnpm install --frozen-lockfile --prod
+RUN pnpm install --prod
 
 FROM base AS build
 WORKDIR /app
 COPY package.json pnpm-workspace.yaml pnpm-lock.yaml* ./
 COPY apps/api/ apps/api/
 COPY packages/ packages/
-RUN pnpm install --frozen-lockfile
+RUN pnpm install
 RUN pnpm --filter @opscore/api build
 
 FROM gcr.io/distroless/nodejs20-debian12

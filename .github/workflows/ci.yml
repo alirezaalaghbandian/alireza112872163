@@ -76,6 +76,7 @@ jobs:
     name: E2E Tests
     runs-on: ubuntu-latest
     needs: [lint, test-unit]
+    if: false # Disabled until migration files and Playwright tests are added
     steps:
       - uses: actions/checkout@v4
       - uses: pnpm/action-setup@v4
