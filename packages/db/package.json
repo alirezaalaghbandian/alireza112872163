@@ -27,6 +27,7 @@
   },
   "devDependencies": {
     "@faker-js/faker": "^9.0.0",
+    "@opscore/config": "workspace:*",
     "drizzle-kit": "^0.24.0",
     "tsx": "^4.19.0",
     "typescript": "^5.5.0"

@@ -3,13 +3,13 @@ import { LoginSchema, SignupSchema, InviteMemberSchema, UpdateMemberRoleSchema, 
 import { sendError } from '../../../lib/errors.js';
 import type { AuthService } from '../application/auth-service.js';
 import type { OrgService } from '../application/org-service.js';
+import '../../../types.js';
 
 export function registerIdentityRoutes(
   app: FastifyInstance,
   authService: AuthService,
   orgService: OrgService,
 ) {
-  // Auth routes
   app.post('/api/v1/auth/signup', async (request, reply) => {
     try {
       const body = SignupSchema.parse(request.body);
@@ -83,9 +83,8 @@ export function registerIdentityRoutes(
 
   app.post('/api/v1/auth/logout', async (request, reply) => {
     try {
-      const ctx = (request as Record<string, unknown>)['ctx'] as { userId: string } | undefined;
-      if (ctx) {
-        await authService.logout(ctx.userId);
+      if (request.ctx) {
+        await authService.logout(request.ctx.userId);
       }
       reply.clearCookie('refreshToken', { path: '/api/v1/auth' });
       return reply.status(204).send();
@@ -94,11 +93,9 @@ export function registerIdentityRoutes(
     }
   });
 
-  // Org routes (authenticated)
   app.get('/api/v1/orgs/me', async (request, reply) => {
     try {
-      const ctx = (request as Record<string, unknown>)['ctx'] as { tenantId: string };
-      const org = await orgService.getOrg(ctx.tenantId);
+      const org = await orgService.getOrg(request.ctx.tenantId);
       return reply.send(org);
     } catch (error) {
       sendError(reply, error, request.url);
@@ -107,9 +104,8 @@ export function registerIdentityRoutes(
 
   app.patch('/api/v1/orgs/me', async (request, reply) => {
     try {
-      const ctx = (request as Record<string, unknown>)['ctx'] as { tenantId: string; role: string };
       const body = UpdateOrgSchema.parse(request.body);
-      const org = await orgService.updateOrg(ctx.tenantId, ctx.role as 'org_owner', body);
+      const org = await orgService.updateOrg(request.ctx.tenantId, request.ctx.role as 'org_owner', body);
       return reply.send(org);
     } catch (error) {
       sendError(reply, error, request.url);
@@ -118,14 +114,13 @@ export function registerIdentityRoutes(
 
   app.post('/api/v1/orgs/me/invitations', async (request, reply) => {
     try {
-      const ctx = (request as Record<string, unknown>)['ctx'] as { tenantId: string; userId: string; role: string };
       const body = InviteMemberSchema.parse(request.body);
       const invitation = await orgService.invite(
-        ctx.tenantId,
+        request.ctx.tenantId,
         body.email,
         body.role,
-        ctx.userId,
-        ctx.role as 'org_owner',
+        request.ctx.userId,
+        request.ctx.role as 'org_owner',
       );
       return reply.status(201).send(invitation);
     } catch (error) {
@@ -135,10 +130,9 @@ export function registerIdentityRoutes(
 
   app.post('/api/v1/orgs/me/members/:id/role', async (request, reply) => {
     try {
-      const ctx = (request as Record<string, unknown>)['ctx'] as { tenantId: string; role: string };
       const params = request.params as { id: string };
       const body = UpdateMemberRoleSchema.parse(request.body);
-      await orgService.updateMemberRole(ctx.tenantId, params.id, body.role, ctx.role as 'org_owner');
+      await orgService.updateMemberRole(request.ctx.tenantId, params.id, body.role, request.ctx.role as 'org_owner');
       return reply.status(204).send();
     } catch (error) {
       sendError(reply, error, request.url);

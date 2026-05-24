@@ -8,26 +8,18 @@ import {
   VALID_INCIDENT_TRANSITIONS,
   InvalidTransitionError,
   NotFoundError,
-  type Role,
   type IncidentStatus,
 } from '@opscore/domain';
 import type { Database } from '../../lib/db.js';
 import { sendError } from '../../lib/errors.js';
 import { assertCan } from '../../lib/rbac.js';
 import { eventBus } from '../../lib/event-bus.js';
-
-interface RequestCtx {
-  tenantId: string;
-  userId: string;
-  role: Role;
-  ipAddress: string;
-  userAgent: string;
-}
+import '../../types.js';
 
 export function registerIncidentsModule(app: FastifyInstance, db: Database) {
   app.get('/api/v1/incidents', async (request, reply) => {
     try {
-      const ctx = (request as Record<string, unknown>)['ctx'] as RequestCtx;
+      const ctx = request.ctx;
       assertCan(ctx.role, 'incidents:read');
       const query = request.query as { status?: string; cursor?: string; limit?: string };
 
@@ -58,7 +50,7 @@ export function registerIncidentsModule(app: FastifyInstance, db: Database) {
 
   app.post('/api/v1/incidents', async (request, reply) => {
     try {
-      const ctx = (request as Record<string, unknown>)['ctx'] as RequestCtx;
+      const ctx = request.ctx;
       assertCan(ctx.role, 'incidents:write');
       const body = CreateIncidentSchema.parse(request.body);
 
@@ -102,7 +94,7 @@ export function registerIncidentsModule(app: FastifyInstance, db: Database) {
 
   app.get('/api/v1/incidents/:id', async (request, reply) => {
     try {
-      const ctx = (request as Record<string, unknown>)['ctx'] as RequestCtx;
+      const ctx = request.ctx;
       assertCan(ctx.role, 'incidents:read');
       const params = request.params as { id: string };
 
@@ -139,7 +131,7 @@ export function registerIncidentsModule(app: FastifyInstance, db: Database) {
 
   app.patch('/api/v1/incidents/:id', async (request, reply) => {
     try {
-      const ctx = (request as Record<string, unknown>)['ctx'] as RequestCtx;
+      const ctx = request.ctx;
       assertCan(ctx.role, 'incidents:write');
       const params = request.params as { id: string };
       const body = UpdateIncidentSchema.parse(request.body);
@@ -207,7 +199,7 @@ export function registerIncidentsModule(app: FastifyInstance, db: Database) {
 
   app.post('/api/v1/incidents/:id/comments', async (request, reply) => {
     try {
-      const ctx = (request as Record<string, unknown>)['ctx'] as RequestCtx;
+      const ctx = request.ctx;
       assertCan(ctx.role, 'incidents:comment');
       const params = request.params as { id: string };
       const body = CreateCommentSchema.parse(request.body);

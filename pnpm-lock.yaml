@@ -8,6 +8,9 @@ importers:
 
   .:
     devDependencies:
+      '@eslint/js':
+        specifier: ^10.0.1
+        version: 10.0.1(eslint@10.4.0(jiti@1.21.7))
       eslint:
         specifier: ^10.4.0
         version: 10.4.0(jiti@1.21.7)
@@ -78,6 +81,9 @@ importers:
         specifier: ^3.23.0
         version: 3.25.76
     devDependencies:
+      '@opscore/config':
+        specifier: workspace:*
+        version: link:../../packages/config
       '@types/node':
         specifier: ^20.14.0
         version: 20.19.41
@@ -187,6 +193,9 @@ importers:
         specifier: ^4.5.0
         version: 4.5.7(@types/react@18.3.29)(react@18.3.1)
     devDependencies:
+      '@opscore/config':
+        specifier: workspace:*
+        version: link:../../packages/config
       '@types/node':
         specifier: ^20.14.0
         version: 20.19.41
@@ -233,6 +242,9 @@ importers:
         specifier: ^3.4.0
         version: 3.4.9
     devDependencies:
+      '@opscore/config':
+        specifier: workspace:*
+        version: link:../../packages/config
       '@types/node':
         specifier: ^20.14.0
         version: 20.19.41
@@ -263,6 +275,9 @@ importers:
       '@faker-js/faker':
         specifier: ^9.0.0
         version: 9.9.0
+      '@opscore/config':
+        specifier: workspace:*
+        version: link:../config
       drizzle-kit:
         specifier: ^0.24.0
         version: 0.24.2
@@ -279,6 +294,9 @@ importers:
         specifier: ^3.23.0
         version: 3.25.76
     devDependencies:
+      '@opscore/config':
+        specifier: workspace:*
+        version: link:../config
       typescript:
         specifier: ^5.5.0
         version: 5.9.3
@@ -892,6 +910,15 @@ packages:
   '@eslint/core@1.2.1':
     resolution: {integrity: sha512-MwcE1P+AZ4C6DWlpin/OmOA54mmIZ/+xZuJiQd4SyB29oAJjN30UW9wkKNptW2ctp4cEsvhlLY/CsQ1uoHDloQ==}
     engines: {node: ^20.19.0 || ^22.13.0 || >=24}
+
+  '@eslint/js@10.0.1':
+    resolution: {integrity: sha512-zeR9k5pd4gxjZ0abRoIaxdc7I3nDktoXZk2qOv9gCNWx3mVwEn32VRhyLaRsDiJjTs0xq/T8mfPtyuXu7GWBcA==}
+    engines: {node: ^20.19.0 || ^22.13.0 || >=24}
+    peerDependencies:
+      eslint: ^10.0.0
+    peerDependenciesMeta:
+      eslint:
+        optional: true
 
   '@eslint/object-schema@3.0.5':
     resolution: {integrity: sha512-vqTaUEgxzm+YDSdElad6PiRoX4t8VGDjCtt05zn4nU810UIx/uNEV7/lZJ6KwFThKZOzOxzXy48da+No7HZaMw==}
@@ -3796,6 +3823,10 @@ snapshots:
   '@eslint/core@1.2.1':
     dependencies:
       '@types/json-schema': 7.0.15
+
+  '@eslint/js@10.0.1(eslint@10.4.0(jiti@1.21.7))':
+    optionalDependencies:
+      eslint: 10.4.0(jiti@1.21.7)
 
   '@eslint/object-schema@3.0.5': {}
 

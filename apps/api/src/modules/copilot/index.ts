@@ -1,17 +1,12 @@
 import type { FastifyInstance } from 'fastify';
 import { eq, and, desc } from 'drizzle-orm';
 import { copilotConversations, copilotMessages, signals, anomalies, incidents } from '@opscore/db/schema';
-import { CreateConversationSchema, SendMessageSchema, NotFoundError, ValidationError, type Role } from '@opscore/domain';
+import { CreateConversationSchema, SendMessageSchema, NotFoundError, ValidationError } from '@opscore/domain';
 import type { Database } from '../../lib/db.js';
 import { sendError } from '../../lib/errors.js';
 import { assertCan } from '../../lib/rbac.js';
 import { eventBus } from '../../lib/event-bus.js';
-
-interface RequestCtx {
-  tenantId: string;
-  userId: string;
-  role: Role;
-}
+import '../../types.js';
 
 interface LLMProvider {
   generateStream(
@@ -47,7 +42,7 @@ export function registerCopilotModule(app: FastifyInstance, db: Database) {
 
   app.post('/api/v1/copilot/conversations', async (request, reply) => {
     try {
-      const ctx = (request as Record<string, unknown>)['ctx'] as RequestCtx;
+      const ctx = request.ctx;
       assertCan(ctx.role, 'copilot:write');
       const body = CreateConversationSchema.parse(request.body);
 
@@ -68,7 +63,7 @@ export function registerCopilotModule(app: FastifyInstance, db: Database) {
 
   app.get('/api/v1/copilot/conversations', async (request, reply) => {
     try {
-      const ctx = (request as Record<string, unknown>)['ctx'] as RequestCtx;
+      const ctx = request.ctx;
       assertCan(ctx.role, 'copilot:read');
 
       const rows = await db
@@ -90,7 +85,7 @@ export function registerCopilotModule(app: FastifyInstance, db: Database) {
 
   app.get('/api/v1/copilot/conversations/:id/messages', async (request, reply) => {
     try {
-      const ctx = (request as Record<string, unknown>)['ctx'] as RequestCtx;
+      const ctx = request.ctx;
       assertCan(ctx.role, 'copilot:read');
       const params = request.params as { id: string };
 
@@ -120,7 +115,7 @@ export function registerCopilotModule(app: FastifyInstance, db: Database) {
 
   app.post('/api/v1/copilot/conversations/:id/messages', async (request, reply) => {
     try {
-      const ctx = (request as Record<string, unknown>)['ctx'] as RequestCtx;
+      const ctx = request.ctx;
       assertCan(ctx.role, 'copilot:write');
       const params = request.params as { id: string };
       const body = SendMessageSchema.parse(request.body);

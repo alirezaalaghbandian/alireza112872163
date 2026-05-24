@@ -15,6 +15,7 @@ import { registerAuditModule } from './modules/audit/index.js';
 import { logAuditEntry } from './modules/audit/index.js';
 import { eventBus } from './lib/event-bus.js';
 import type { DomainEvent } from '@opscore/domain';
+import './types.js';
 
 const app = Fastify({
   logger: {
@@ -69,7 +70,7 @@ app.addHook('onRequest', async (request, reply) => {
   try {
     const token = authHeader.slice(7);
     const payload = await verifyToken(token);
-    (request as Record<string, unknown>)['ctx'] = {
+    request.ctx = {
       userId: payload.sub,
       tenantId: payload.tenantId,
       role: payload.role,
@@ -93,8 +94,8 @@ app.addHook('onResponse', async (request, reply) => {
     url: request.url,
     statusCode: reply.statusCode,
     responseTime: reply.elapsedTime,
-    tenant_id: ((request as Record<string, unknown>)['ctx'] as Record<string, unknown> | undefined)?.['tenantId'],
-    user_id: ((request as Record<string, unknown>)['ctx'] as Record<string, unknown> | undefined)?.['userId'],
+    tenant_id: request.ctx?.tenantId,
+    user_id: request.ctx?.userId,
     trace_id: request.id,
   });
 });

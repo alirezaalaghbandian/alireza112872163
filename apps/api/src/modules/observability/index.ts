@@ -6,21 +6,13 @@ import type { Database } from '../../lib/db.js';
 import { sendError } from '../../lib/errors.js';
 import { assertCan } from '../../lib/rbac.js';
 import { eventBus } from '../../lib/event-bus.js';
-import type { Role } from '@opscore/domain';
-
-interface RequestCtx {
-  tenantId: string;
-  userId: string;
-  role: Role;
-  ipAddress: string;
-  userAgent: string;
-}
+import '../../types.js';
 
 export function registerObservabilityModule(app: FastifyInstance, db: Database) {
   // Signals
   app.get('/api/v1/signals', async (request, reply) => {
     try {
-      const ctx = (request as Record<string, unknown>)['ctx'] as RequestCtx;
+      const ctx = request.ctx;
       assertCan(ctx.role, 'signals:read');
       const query = ListSignalsSchema.parse(request.query);
 
@@ -52,7 +44,7 @@ export function registerObservabilityModule(app: FastifyInstance, db: Database) 
 
   app.post('/api/v1/signals', async (request, reply) => {
     try {
-      const ctx = (request as Record<string, unknown>)['ctx'] as RequestCtx;
+      const ctx = request.ctx;
       assertCan(ctx.role, 'signals:write');
       const body = CreateSignalSchema.parse(request.body);
       const idempotencyKey = request.headers['idempotency-key'] as string | undefined;
@@ -100,7 +92,7 @@ export function registerObservabilityModule(app: FastifyInstance, db: Database) 
   // KPIs
   app.get('/api/v1/kpis', async (request, reply) => {
     try {
-      const ctx = (request as Record<string, unknown>)['ctx'] as RequestCtx;
+      const ctx = request.ctx;
       assertCan(ctx.role, 'kpis:read');
 
       const rows = await db
@@ -117,7 +109,7 @@ export function registerObservabilityModule(app: FastifyInstance, db: Database) 
 
   app.post('/api/v1/kpis', async (request, reply) => {
     try {
-      const ctx = (request as Record<string, unknown>)['ctx'] as RequestCtx;
+      const ctx = request.ctx;
       assertCan(ctx.role, 'kpis:write');
       const body = CreateKpiSchema.parse(request.body);
 
@@ -142,7 +134,7 @@ export function registerObservabilityModule(app: FastifyInstance, db: Database) 
 
   app.get('/api/v1/kpis/:id/snapshots', async (request, reply) => {
     try {
-      const ctx = (request as Record<string, unknown>)['ctx'] as RequestCtx;
+      const ctx = request.ctx;
       assertCan(ctx.role, 'kpis:read');
       const params = request.params as { id: string };
       const query = ListSnapshotsSchema.parse(request.query);
@@ -174,7 +166,7 @@ export function registerObservabilityModule(app: FastifyInstance, db: Database) 
   // Anomalies
   app.get('/api/v1/anomalies', async (request, reply) => {
     try {
-      const ctx = (request as Record<string, unknown>)['ctx'] as RequestCtx;
+      const ctx = request.ctx;
       assertCan(ctx.role, 'anomalies:read');
 
       const rows = await db

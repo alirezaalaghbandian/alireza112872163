@@ -1,21 +1,16 @@
 import type { FastifyInstance } from 'fastify';
 import { eq, and, desc, lt, gte, lte } from 'drizzle-orm';
 import { auditEntries } from '@opscore/db/schema';
-import { ListAuditSchema, type Role } from '@opscore/domain';
+import { ListAuditSchema } from '@opscore/domain';
 import type { Database } from '../../lib/db.js';
 import { sendError } from '../../lib/errors.js';
 import { assertCan } from '../../lib/rbac.js';
-
-interface RequestCtx {
-  tenantId: string;
-  userId: string;
-  role: Role;
-}
+import '../../types.js';
 
 export function registerAuditModule(app: FastifyInstance, db: Database) {
   app.get('/api/v1/audit', async (request, reply) => {
     try {
-      const ctx = (request as Record<string, unknown>)['ctx'] as RequestCtx;
+      const ctx = request.ctx;
       assertCan(ctx.role, 'audit:read');
       const query = ListAuditSchema.parse(request.query);
 

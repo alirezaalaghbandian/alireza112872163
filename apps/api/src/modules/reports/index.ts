@@ -1,22 +1,17 @@
 import type { FastifyInstance } from 'fastify';
 import { eq, and, desc } from 'drizzle-orm';
 import { reports, reportRuns } from '@opscore/db/schema';
-import { CreateReportSchema, NotFoundError, type Role } from '@opscore/domain';
+import { CreateReportSchema, NotFoundError } from '@opscore/domain';
 import type { Database } from '../../lib/db.js';
 import { sendError } from '../../lib/errors.js';
 import { assertCan } from '../../lib/rbac.js';
 import { eventBus } from '../../lib/event-bus.js';
-
-interface RequestCtx {
-  tenantId: string;
-  userId: string;
-  role: Role;
-}
+import '../../types.js';
 
 export function registerReportsModule(app: FastifyInstance, db: Database) {
   app.get('/api/v1/reports', async (request, reply) => {
     try {
-      const ctx = (request as Record<string, unknown>)['ctx'] as RequestCtx;
+      const ctx = request.ctx;
       assertCan(ctx.role, 'reports:read');
 
       const rows = await db
@@ -33,7 +28,7 @@ export function registerReportsModule(app: FastifyInstance, db: Database) {
 
   app.post('/api/v1/reports', async (request, reply) => {
     try {
-      const ctx = (request as Record<string, unknown>)['ctx'] as RequestCtx;
+      const ctx = request.ctx;
       assertCan(ctx.role, 'reports:write');
       const body = CreateReportSchema.parse(request.body);
 
@@ -56,7 +51,7 @@ export function registerReportsModule(app: FastifyInstance, db: Database) {
 
   app.post('/api/v1/reports/:id/run', async (request, reply) => {
     try {
-      const ctx = (request as Record<string, unknown>)['ctx'] as RequestCtx;
+      const ctx = request.ctx;
       assertCan(ctx.role, 'reports:run');
       const params = request.params as { id: string };
 
