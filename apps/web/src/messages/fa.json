@@ -1,0 +1,47 @@
+{
+  "common": {
+    "save": "ذخیره تغییرات",
+    "cancel": "انصراف",
+    "delete": "حذف",
+    "create": "ایجاد",
+    "edit": "ویرایش",
+    "search": "جستجو...",
+    "loading": "در حال بارگذاری...",
+    "noResults": "نتیجه‌ای یافت نشد"
+  },
+  "nav": {
+    "dashboard": "داشبورد",
+    "signals": "سیگنال‌ها",
+    "kpis": "شاخص‌های کلیدی",
+    "anomalies": "ناهنجاری‌ها",
+    "incidents": "رخدادها",
+    "copilot": "دستیار هوشمند",
+    "reports": "گزارش‌ها",
+    "settings": "تنظیمات"
+  },
+  "auth": {
+    "signIn": "ورود",
+    "signUp": "ایجاد حساب کاربری",
+    "signOut": "خروج",
+    "email": "ایمیل",
+    "password": "رمز عبور",
+    "name": "نام کامل",
+    "orgName": "نام سازمان"
+  },
+  "dashboard": {
+    "title": "داشبورد",
+    "subtitle": "نمای کلی از شاخص‌های عملیاتی و رخدادهای فعال شما."
+  },
+  "incidents": {
+    "title": "رخدادها",
+    "newIncident": "رخداد جدید",
+    "status": {
+      "open": "باز",
+      "acknowledged": "تأیید شده",
+      "in_progress": "در حال انجام",
+      "waiting_on_reporter": "در انتظار گزارش‌دهنده",
+      "resolved": "حل شده",
+      "closed": "بسته شده"
+    }
+  }
+}

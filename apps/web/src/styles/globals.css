@@ -1,0 +1,99 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  /* Surfaces — light theme */
+  --bg-app: oklch(99% 0.003 250);
+  --bg-elevated: oklch(100% 0 0);
+  --bg-sunken: oklch(97% 0.005 250);
+
+  /* Borders */
+  --border-subtle: oklch(93% 0.005 250);
+  --border-strong: oklch(85% 0.008 250);
+
+  /* Text */
+  --text-primary: oklch(20% 0.01 250);
+  --text-secondary: oklch(45% 0.01 250);
+  --text-tertiary: oklch(60% 0.01 250);
+
+  /* Brand */
+  --brand-500: oklch(58% 0.2 270);
+  --brand-600: oklch(50% 0.22 270);
+  --brand-50: oklch(96% 0.04 270);
+
+  /* Semantic */
+  --success-500: oklch(62% 0.16 150);
+  --warning-500: oklch(75% 0.16 80);
+  --danger-500: oklch(60% 0.2 25);
+  --info-500: oklch(65% 0.12 230);
+
+  /* Type scale */
+  --text-xs: 12px;
+  --text-sm: 13px;
+  --text-base: 14px;
+  --text-lg: 16px;
+  --text-xl: 20px;
+  --text-2xl: 28px;
+  --text-3xl: 36px;
+  --font-sans: 'Inter', 'IBM Plex Sans Arabic', system-ui, sans-serif;
+  --font-mono: 'JetBrains Mono', ui-monospace, monospace;
+
+  /* Radii */
+  --radius-sm: 6px;
+  --radius-md: 8px;
+  --radius-lg: 12px;
+  --radius-xl: 16px;
+
+  /* Shadows — subtle, not floaty */
+  --shadow-xs: 0 1px 2px 0 oklch(0% 0 0 / 0.04);
+  --shadow-sm: 0 1px 3px 0 oklch(0% 0 0 / 0.06),
+    0 1px 2px -1px oklch(0% 0 0 / 0.04);
+  --shadow-md: 0 4px 8px -2px oklch(0% 0 0 / 0.08),
+    0 2px 4px -2px oklch(0% 0 0 / 0.04);
+
+  /* Motion */
+  --ease-out: cubic-bezier(0.2, 0, 0, 1);
+  --ease-in-out: cubic-bezier(0.4, 0, 0.2, 1);
+  --duration-fast: 120ms;
+  --duration-normal: 180ms;
+  --duration-slow: 240ms;
+}
+
+[data-theme='dark'] {
+  --bg-app: oklch(15% 0.01 250);
+  --bg-elevated: oklch(19% 0.012 250);
+  --bg-sunken: oklch(12% 0.01 250);
+  --border-subtle: oklch(25% 0.012 250);
+  --border-strong: oklch(32% 0.015 250);
+  --text-primary: oklch(96% 0.005 250);
+  --text-secondary: oklch(75% 0.008 250);
+  --text-tertiary: oklch(58% 0.01 250);
+}
+
+@layer base {
+  * {
+    border-color: var(--border-subtle);
+  }
+
+  body {
+    background-color: var(--bg-app);
+    color: var(--text-primary);
+    font-family: var(--font-sans);
+    font-size: var(--text-base);
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  /* Logical properties for RTL */
+  [dir='rtl'] .flip-rtl {
+    transform: scaleX(-1);
+  }
+}
+
+@layer components {
+  .focus-ring {
+    @apply outline-none ring-2 ring-brand-500 ring-offset-2 ring-offset-bg-app;
+  }
+}
